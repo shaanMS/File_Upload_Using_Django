@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: rgb(54, 101, 107);
+            color: white;
+            padding: 30px 40px;
+            border-bottom: 5px solid rgb(117, 176, 111);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header h1 i {
+            color: rgb(240, 248, 164);
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgb(54, 101, 107);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgb(218, 216, 135);
+        }
+
+        .section-title h2 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .section-title i {
+            color: rgb(117, 176, 111);
+        }
+
+        .documents-list {
+            margin-bottom: 40px;
+        }
+
+        .documents-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .documents-table thead {
+            background-color: rgb(218, 216, 135);
+            color: rgb(54, 101, 107);
+        }
+
+        .documents-table th {
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .documents-table tbody tr {
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+
+        .documents-table tbody tr:hover {
+            background-color: rgba(117, 176, 111, 0.05);
+        }
+
+        .documents-table td {
+            padding: 18px 20px;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: rgb(54, 101, 107);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-name i {
+            color: rgb(117, 176, 111);
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgb(117, 176, 111);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background-color: rgb(54, 101, 107);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-section {
+            background-color: rgba(240, 248, 164, 0.15);
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 5px solid rgb(117, 176, 111);
+        }
+
+        .upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: rgb(54, 101, 107);
+            color: white;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .upload-btn:hover {
+            background-color: rgb(40, 80, 85);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(54, 101, 107, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #777;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: rgb(218, 216, 135);
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            color: rgb(54, 101, 107);
+            margin-bottom: 10px;
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(117, 176, 111, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgb(117, 176, 111);
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 25px;
+            }
+            
+            .documents-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .header {
+                padding: 25px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-folder-open"></i> Document Management System</h1>
+            <p>Securely manage and access your uploaded files</p>
+        </div>
+        
+        <div class="content">
+            <div class="documents-list">
+                <div class="section-title">
+                    <i class="fas fa-file-alt"></i>
+                    <h2>Uploaded Files</h2>
+                </div>
+                
+                {% if documents %}
+                <table class="documents-table">
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doc in documents %}
+                        <tr>
+                            <td>
+                                <div class="file-name">
+                                    <div class="file-icon">
+                                        <i class="fas fa-file"></i>
+                                    </div>
+                                    {{ doc.title }}
+                                </div>
+                            </td>
+                            <td>
+                                <a href="{{ doc.uploaded_file.url }}" class="download-btn">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>No documents uploaded yet</h3>
+                    <p>Get started by uploading your first file</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="upload-section">
+                <a href="{% url 'upload_file' %}" class="upload-btn">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload More Files
+                </a>
+                <p style="margin-top: 15px; color: #666; font-size: 14px;">
+                    Supported formats: PDF, DOC, XLS, images, and more
+                </p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Document Management System &copy; 2023 | All rights reserved</p>
+        </div>
+    </div>
+
+    <script>
+        // Add subtle animations to buttons on hover
+        document.querySelectorAll('.download-btn, .upload-btn').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.3s ease';
+            });
+        });
+        
+        // Add animation to table rows
+        document.querySelectorAll('.documents-table tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(5px)';
+            });
+            
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+    </script>
+</body>
+</html>

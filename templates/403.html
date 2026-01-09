@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 Forbidden | Access Denied</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #36656B;
+            --secondary: #75B06F;
+            --accent: #DAD887;
+            --light: #F0F8A4;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-700: #334155;
+            --gray-900: #0f172a;
+            --red-100: #fee2e2;
+            --red-600: #dc2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--gray-900);
+        }
+
+        .error-container {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .error-card {
+            background: white;
+            border-radius: 20px;
+            padding: 48px 40px;
+            box-shadow: 
+                0 1px 3px rgba(0,0,0,0.04),
+                0 20px 40px rgba(0,0,0,0.08);
+            border: 1px solid var(--gray-200);
+            text-align: center;
+        }
+
+        .error-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--red-100) 0%, #fef2f2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            color: var(--red-600);
+            font-size: 32px;
+            border: 4px solid white;
+            box-shadow: 0 8px 24px rgba(220, 38, 38, 0.12);
+        }
+
+        .error-code {
+            font-size: 64px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .error-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 12px;
+        }
+
+        .error-message {
+            color: var(--gray-700);
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 32px;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .alert-box {
+            background: linear-gradient(135deg, var(--light) 0%, #f8f9d7 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 32px;
+            border-left: 4px solid var(--accent);
+            text-align: left;
+        }
+
+        .alert-box h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .alert-box p {
+            color: var(--gray-700);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary) 0%, #68a463 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(117, 176, 111, 0.25);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--gray-200);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .security-info {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 32px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .security-info h5 {
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .security-info p {
+            color: var(--gray-700);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .footer {
+            margin-top: 32px;
+            font-size: 12px;
+            color: var(--gray-700);
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .request-id {
+            font-family: monospace;
+            background: var(--gray-100);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--gray-900);
+        }
+
+        @media (max-width: 480px) {
+            .error-card {
+                padding: 32px 24px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-card">
+            <div class="error-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            
+            <div class="error-code">403</div>
+            <div class="error-title">Access Forbidden</div>
+            
+            <p class="error-message">
+                You don't have permission to access this resource on the server.
+            </p>
+            
+            <div class="alert-box">
+                <h4>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Security Alert
+                </h4>
+                <p>
+                    <strong>Unusual activity detected.</strong> 
+                    Your request has been blocked due to security policies. 
+                    This may be caused by excessive requests or suspicious patterns.
+                </p>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Go Back
+                </button>
+                <a href="/" class="btn btn-secondary">
+                    <i class="fas fa-home"></i>
+                    Home Page
+                </a>
+                <button class="btn btn-secondary" onclick="location.reload()">
+                    <i class="fas fa-redo"></i>
+                    Try Again
+                </button>
+            </div>
+            
+            <div class="security-info">
+                <h5>
+                    <i class="fas fa-info-circle"></i>
+                    Security Information
+                </h5>
+                <p>
+                    If you believe this is an error, please contact your system administrator 
+                    or wait 15 minutes before trying again. Repeated violations may result in 
+                    permanent restrictions.
+                </p>
+            </div>
+            
+            <div class="footer">
+                <div style="margin-bottom: 8px;">
+                    <i class="fas fa-clock"></i>
+                    Timestamp: <span id="timestamp"></span>
+                </div>
+                <div>
+                    <i class="fas fa-fingerprint"></i>
+                    Request ID: <span class="request-id">REQ-{% now "YmdHis" %}-403</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set current timestamp
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+        
+        // Auto hide after 30 seconds if user doesn't interact
+        setTimeout(() => {
+            const card = document.querySelector('.error-card');
+            card.style.opacity = '0.95';
+            card.style.transform = 'scale(0.99)';
+        }, 30000);
+        
+        // Reset on interaction
+        document.addEventListener('click', () => {
+            const card = document.querySelector('.error-card');
+            card.style.opacity = '1';
+            card.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>

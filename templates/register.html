@@ -1,0 +1,316 @@
+<div class="registration-container">
+    <div class="registration-card">
+        <div class="form-header">
+            <div class="header-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <h2>Create Account</h2>
+            <p>Join our platform today</p>
+        </div>
+
+        <form method="POST" class="registration-form">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div class="form-group">
+                <div class="input-wrapper">
+                    {% if field.name == 'username' %}
+                    <i class="fas fa-user"></i>
+                    {% elif field.name == 'email' %}
+                    <i class="fas fa-envelope"></i>
+                    {% elif 'password' in field.name %}
+                    <i class="fas fa-lock"></i>
+                    {% else %}
+                    <i class="fas fa-pen"></i>
+                    {% endif %}
+                    
+                    {{ field }}
+                    
+                    {% if 'password' in field.name %}
+                    <button type="button" class="password-toggle">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    {% endif %}
+                </div>
+                
+                {% if field.help_text %}
+                <div class="help-text">
+                    {{ field.help_text }}
+                </div>
+                {% endif %}
+                
+                {% if field.errors %}
+                <div class="error-message">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="form-options">
+                <label class="checkbox">
+                    <input type="checkbox" required>
+                    <span>I agree to the <a href="#">Terms & Conditions</a></span>
+                </label>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span>Create Account</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a href="#">Sign In</a>
+        </div>
+    </div>
+</div>
+
+<style>
+.registration-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+    padding: 20px;
+}
+
+.registration-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.header-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #36656B 0%, #4a8c95 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    color: white;
+    font-size: 24px;
+}
+
+.form-header h2 {
+    color: #1f2937;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.form-header p {
+    color: #6b7280;
+    font-size: 15px;
+}
+
+.registration-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 4px;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 16px;
+}
+
+.input-wrapper input,
+.input-wrapper select,
+.input-wrapper textarea {
+    width: 100%;
+    padding: 14px 16px 14px 44px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 15px;
+    background: white;
+    transition: all 0.2s;
+    color: #374151;
+}
+
+.input-wrapper input:focus,
+.input-wrapper select:focus,
+.input-wrapper textarea:focus {
+    outline: none;
+    border-color: #36656B;
+    box-shadow: 0 0 0 4px rgba(54, 101, 107, 0.1);
+}
+
+.input-wrapper input:focus + i {
+    color: #36656B;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 16px;
+}
+
+.password-toggle:hover {
+    color: #4b5563;
+}
+
+.help-text {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 6px;
+    margin-left: 8px;
+}
+
+.error-message {
+    font-size: 13px;
+    color: #dc2626;
+    margin-top: 6px;
+    margin-left: 8px;
+}
+
+.form-options {
+    margin: 20px 0;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.checkbox input {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.checkbox a {
+    color: #36656B;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.checkbox a:hover {
+    color: #75B06F;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #36656B 0%, #2a4f54 100%);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(54, 101, 107, 0.25);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.login-link a {
+    color: #36656B;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 4px;
+}
+
+.login-link a:hover {
+    color: #75B06F;
+}
+</style>
+
+<script>
+// Password toggle functionality
+document.querySelectorAll('.password-toggle').forEach(toggle => {
+    toggle.addEventListener('click', function() {
+        const input = this.parentElement.querySelector('input');
+        const icon = this.querySelector('i');
+        
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+});
+
+// Form validation feedback
+document.querySelectorAll('input, select, textarea').forEach(input => {
+    input.addEventListener('blur', function() {
+        if (this.value.trim() !== '') {
+            this.style.borderColor = '#10b981';
+        } else {
+            this.style.borderColor = '#e5e7eb';
+        }
+    });
+});
+
+// Form submission
+document.querySelector('.registration-form').addEventListener('submit', function(e) {
+    const submitBtn = this.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    const originalText = submitBtn.querySelector('span').textContent;
+    submitBtn.querySelector('span').textContent = 'Creating Account...';
+    
+    setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.querySelector('span').textContent = originalText;
+    }, 2000);
+});
+</script>

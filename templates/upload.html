@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Files | Document Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .upload-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin: 20px;
+        }
+
+        .upload-header {
+            background: linear-gradient(135deg, rgb(54, 101, 107) 0%, rgb(40, 80, 85) 100%);
+            color: white;
+            padding: 35px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background-color: rgba(240, 248, 164, 0.1);
+            border-radius: 50%;
+        }
+
+        .upload-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 100px;
+            height: 100px;
+            background-color: rgba(117, 176, 111, 0.1);
+            border-radius: 50%;
+        }
+
+        .upload-header h1 {
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .upload-header p {
+            opacity: 0.9;
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .upload-content {
+            padding: 40px;
+        }
+
+        .upload-card {
+            background-color: rgba(240, 248, 164, 0.08);
+            border: 2px dashed rgba(117, 176, 111, 0.4);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .upload-card:hover {
+            border-color: rgb(117, 176, 111);
+            background-color: rgba(240, 248, 164, 0.12);
+        }
+
+        .upload-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(117, 176, 111, 0.1) 0%, rgba(54, 101, 107, 0.1) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: rgb(54, 101, 107);
+            font-size: 32px;
+        }
+
+        .upload-card h3 {
+            color: rgb(54, 101, 107);
+            margin-bottom: 15px;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .upload-card p {
+            color: #666;
+            margin-bottom: 25px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .upload-form {
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: rgb(54, 101, 107);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: white;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="file"]:focus {
+            outline: none;
+            border-color: rgb(117, 176, 111);
+            box-shadow: 0 0 0 3px rgba(117, 176, 111, 0.1);
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-input-custom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background-color: white;
+            border: 2px dashed #e1e5e9;
+            border-radius: 10px;
+            color: #777;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-input-custom:hover {
+            border-color: rgb(117, 176, 111);
+            background-color: rgba(117, 176, 111, 0.02);
+        }
+
+        .file-input-custom i {
+            color: rgb(117, 176, 111);
+            font-size: 18px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+            flex-wrap: wrap;
+        }
+
+        .upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgb(117, 176, 111) 0%, rgb(99, 160, 93) 100%);
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            flex: 1;
+            justify-content: center;
+            min-width: 200px;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(117, 176, 111, 0.3);
+        }
+
+        .view-files-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: white;
+            color: rgb(54, 101, 107);
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            border: 2px solid rgb(218, 216, 135);
+            flex: 1;
+            justify-content: center;
+            min-width: 200px;
+        }
+
+        .view-files-btn:hover {
+            background-color: rgba(218, 216, 135, 0.1);
+            border-color: rgb(54, 101, 107);
+            transform: translateY(-3px);
+        }
+
+        .file-requirements {
+            background-color: rgba(218, 216, 135, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 4px solid rgb(218, 216, 135);
+        }
+
+        .file-requirements h4 {
+            color: rgb(54, 101, 107);
+            margin-bottom: 12px;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-requirements ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .file-requirements li {
+            padding: 8px 0;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-requirements li i {
+            color: rgb(117, 176, 111);
+            font-size: 14px;
+        }
+
+        .upload-progress {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #e1e5e9;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, rgb(117, 176, 111) 0%, rgb(54, 101, 107) 100%);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .upload-container {
+                margin: 10px;
+            }
+            
+            .upload-content {
+                padding: 25px;
+            }
+            
+            .upload-card {
+                padding: 25px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .upload-btn, .view-files-btn {
+                width: 100%;
+            }
+        }
+
+        /* Django form styling */
+        .form-group p {
+            margin-bottom: 0;
+        }
+
+        .form-group .errorlist {
+            color: #e74c3c;
+            margin-top: 8px;
+            font-size: 14px;
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .form-group .errorlist li {
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group .errorlist li:before {
+            content: '⚠';
+            font-size: 14px;
+        }
+
+        .helptext {
+            font-size: 14px;
+            color: #888;
+            margin-top: 8px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <div class="upload-header">
+            <h1><i class="fas fa-cloud-upload-alt"></i> Upload Files</h1>
+            <p>Securely upload documents to your management system</p>
+        </div>
+        
+        <div class="upload-content">
+            <div class="upload-card">
+                <div class="upload-icon">
+                    <i class="fas fa-file-upload"></i>
+                </div>
+                <h3>Select Files to Upload</h3>
+                <p>Drag and drop files here or click to browse from your device</p>
+                
+                <form method="post" enctype="multipart/form-data" class="upload-form" id="uploadForm">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="id_title"><i class="fas fa-heading"></i> Document Title</label>
+                        <input type="text" name="title" id="id_title" placeholder="Enter a descriptive title for your file" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_uploaded_file"><i class="fas fa-file"></i> Select File</label>
+                        <div class="file-input-wrapper">
+                            <div class="file-input-custom" id="fileInputCustom">
+                                <span id="fileName">No file selected</span>
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <input type="file" name="uploaded_file" id="id_uploaded_file" required>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-progress" id="uploadProgress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <p id="progressText">Uploading...</p>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="upload-btn" id="submitBtn">
+                            <i class="fas fa-upload"></i> Upload File
+                        </button>
+                        
+                        <a href="{% url 'file-list' %}" class="view-files-btn">
+                            <i class="fas fa-list"></i> View Uploaded Files
+                        </a>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="file-requirements">
+                <h4><i class="fas fa-info-circle"></i> Upload Guidelines</h4>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Maximum file size: 50 MB</li>
+                    <li><i class="fas fa-check-circle"></i> Supported formats: PDF, DOC, DOCX, XLS, XLSX, PPT, JPG, PNG</li>
+                    <li><i class="fas fa-check-circle"></i> Use descriptive titles for easier retrieval</li>
+                    <li><i class="fas fa-check-circle"></i> Files are encrypted and stored securely</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Document Management System &copy; 2023 | Secure File Upload</p>
+    </div>
+
+    <script>
+        // File input custom display
+        document.getElementById('id_uploaded_file').addEventListener('change', function(e) {
+            const fileName = this.files[0] ? this.files[0].name : 'No file selected';
+            document.getElementById('fileName').textContent = fileName;
+            
+            // Add visual feedback
+            const fileInputCustom = document.getElementById('fileInputCustom');
+            if (this.files[0]) {
+                fileInputCustom.style.borderColor = 'rgb(117, 176, 111)';
+                fileInputCustom.style.backgroundColor = 'rgba(117, 176, 111, 0.05)';
+            } else {
+                fileInputCustom.style.borderColor = '#e1e5e9';
+                fileInputCustom.style.backgroundColor = 'white';
+            }
+        });
+        
+        // Form submission with progress indicator
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            const uploadProgress = document.getElementById('uploadProgress');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            // Disable button and show progress
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+            uploadProgress.style.display = 'block';
+            
+            // Simulate progress (in real app, this would be actual upload progress)
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 10;
+                progressFill.style.width = progress + '%';
+                
+                if (progress >= 90) {
+                    clearInterval(progressInterval);
+                    progressText.textContent = 'Processing file...';
+                }
+            }, 200);
+            
+            // In a real implementation, you would hook into actual upload progress events
+            // For this demo, we'll just let the form submit normally
+        });
+        
+        // Drag and drop functionality
+        const uploadCard = document.querySelector('.upload-card');
+        const fileInput = document.getElementById('id_uploaded_file');
+        
+        uploadCard.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadCard.style.borderColor = 'rgb(117, 176, 111)';
+            uploadCard.style.backgroundColor = 'rgba(240, 248, 164, 0.15)';
+        });
+        
+        uploadCard.addEventListener('dragleave', () => {
+            uploadCard.style.borderColor = 'rgba(117, 176, 111, 0.4)';
+            uploadCard.style.backgroundColor = 'rgba(240, 248, 164, 0.08)';
+        });
+        
+        uploadCard.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadCard.style.borderColor = 'rgba(117, 176, 111, 0.4)';
+            uploadCard.style.backgroundColor = 'rgba(240, 248, 164, 0.08)';
+            
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                const fileName = fileInput.files[0].name;
+                document.getElementById('fileName').textContent = fileName;
+                
+                // Add visual feedback
+                const fileInputCustom = document.getElementById('fileInputCustom');
+                fileInputCustom.style.borderColor = 'rgb(117, 176, 111)';
+                fileInputCustom.style.backgroundColor = 'rgba(117, 176, 111, 0.05)';
+            }
+        });
+        
+        // Auto-focus on title field
+        document.getElementById('id_title').focus();
+    </script>
+</body>
+</html>
